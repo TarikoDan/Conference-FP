@@ -1,7 +1,7 @@
 package com.conference.my.entity;
 
 public enum  Role {
-  VISITOR,
+  MODERATOR,
   SPEAKER,
-  MODERATOR
+  VISITOR,
 }
