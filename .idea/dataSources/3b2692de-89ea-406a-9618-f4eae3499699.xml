@@ -7,9 +7,9 @@
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
       <DefaultCasing>lower/lower</DefaultCasing>
     </root>
-    <schema id="2" parent="1" name="conference">
+    <schema id="2" parent="1" name="conference2">
       <Current>1</Current>
-      <Collation>latin1_swedish_ci</Collation>
+      <Collation>utf8_general_ci</Collation>
     </schema>
     <schema id="3" parent="1" name="drivercars">
       <Collation>latin1_swedish_ci</Collation>

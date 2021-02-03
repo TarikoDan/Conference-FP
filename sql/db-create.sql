@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS conference;
-CREATE DATABASE IF NOT EXISTS conference;
+CREATE DATABASE IF NOT EXISTS conference DEFAULT CHARACTER SET utf8;
 USE conference;
 
 DROP TABLE IF EXISTS event_report;
@@ -21,7 +21,7 @@ CREATE TABLE user (
     email VARCHAR(30) NOT NULL UNIQUE,
     password VARCHAR(30) NOT NULL,
     role_id INT,
-    CONSTRAINT fk_role_id FOREIGN KEY (role_id)
+    CONSTRAINT fk_user_role_id FOREIGN KEY (role_id)
         REFERENCES role (id)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -30,7 +30,7 @@ CREATE TABLE report (
     id INT AUTO_INCREMENT PRIMARY KEY,
     topic VARCHAR(100) NOT NULL,
     speaker INT,
-    CONSTRAINT fk_user_id FOREIGN KEY (speaker)
+    CONSTRAINT fk_report_user_id FOREIGN KEY (speaker)
         REFERENCES user (id)
         ON UPDATE CASCADE ON DELETE SET NULL
 );
@@ -50,9 +50,9 @@ CREATE TABLE location (
 CREATE TABLE event (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
-    date DATETIME NOT NULL,
+    date DATE NOT NULL,
     location INT,
-    CONSTRAINT fk_Location_id FOREIGN KEY (location)
+    CONSTRAINT fk_event_Location_id FOREIGN KEY (location)
         REFERENCES location (id)
         ON UPDATE CASCADE ON DELETE SET NULL
 );
@@ -74,10 +74,10 @@ CREATE TABLE event_visitor (
     visitor_id INT NOT NULL,
     visited BOOL DEFAULT FALSE,
     PRIMARY KEY (event_id , visitor_id),
-    CONSTRAINT fk_event_speaker_event_id FOREIGN KEY (event_id)
+    CONSTRAINT fk_event_visitor_event_id FOREIGN KEY (event_id)
         REFERENCES event (id)
         ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_event_speaker_visitor_id FOREIGN KEY (visitor_id)
+    CONSTRAINT fk_event_visitor_user_id FOREIGN KEY (visitor_id)
         REFERENCES user (id)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -90,3 +90,4 @@ INSERT INTO role (id, title) VALUES (3, 'VISITOR');
 INSERT INTO user (id, name, email, password, role_id) VALUES (DEFAULT, 'Admin', 'taras@gmail.com', 'admin', 1);
 INSERT INTO user (id, name, email, password, role_id) VALUES (DEFAULT, 'Speaker', 'speaker@gmail.com', 'speaker', 2);
 INSERT INTO user (id, name, email, password, role_id) VALUES (DEFAULT, 'Visitor1', 'v1@gmail.com', 'v1', 3);
+INSERT INTO event (id, date, title) VALUES (DEFAULT, '2021-01-31', 'event');
