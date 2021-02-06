@@ -2,19 +2,33 @@ package com.conference.my.entity;
 
 public class Report {
   private int id;
-  private final String topic;
+  private String topic;
   private Speaker speaker;
 
-  private Report(String topic) {
+  public Report() { }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getTopic() {
+    return topic;
+  }
+
+  public void setTopic(String topic) {
     this.topic = topic;
+  }
+
+  public Speaker getSpeaker() {
+    return speaker;
   }
 
   public void setSpeaker(Speaker speaker) {
     this.speaker = speaker;
-  }
-
-  public static Report createReport(String topic){
-    return new Report(topic);
   }
 
   @Override

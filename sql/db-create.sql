@@ -72,7 +72,8 @@ CREATE TABLE event_report (
 CREATE TABLE event_visitor (
     event_id INT NOT NULL,
     visitor_id INT NOT NULL,
-    visited BOOL DEFAULT FALSE,
+    is_visited BOOL DEFAULT FALSE,
+    last_update DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
     PRIMARY KEY (event_id , visitor_id),
     CONSTRAINT fk_event_visitor_event_id FOREIGN KEY (event_id)
         REFERENCES event (id)
@@ -90,4 +91,5 @@ INSERT INTO role (id, title) VALUES (3, 'VISITOR');
 INSERT INTO user (id, name, email, password, role_id) VALUES (DEFAULT, 'Admin', 'taras@gmail.com', 'admin', 1);
 INSERT INTO user (id, name, email, password, role_id) VALUES (DEFAULT, 'Speaker', 'speaker@gmail.com', 'speaker', 2);
 INSERT INTO user (id, name, email, password, role_id) VALUES (DEFAULT, 'Visitor1', 'v1@gmail.com', 'v1', 3);
+INSERT INTO report (id, topic) VALUES (DEFAULT, 'newReport');
 INSERT INTO event (id, date, title) VALUES (DEFAULT, '2021-01-31', 'event');

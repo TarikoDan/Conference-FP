@@ -2,14 +2,12 @@ package com.conference.my.entity;
 
 public class User {
   private int id;
-  private final String name;
+  private String name;
   private String email;
   private String password;
   protected Role role = Role.VISITOR;
 
-  public User(String name) {
-    this.name = name;
-  }
+  public User() { }
 
   public User(String name, String email, String password) {
     this.name = name;
@@ -19,6 +17,38 @@ public class User {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public Role getRole() {
+    return role;
   }
 
   @Override

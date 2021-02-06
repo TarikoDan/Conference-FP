@@ -4,7 +4,7 @@ public class Speaker extends User{
   private final Role role ;
 
   public Speaker(String name) {
-    super(name);
+    super();
     this.role = Role.SPEAKER;
   }
 
