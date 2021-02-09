@@ -1,19 +1,10 @@
 package com.conference.my.entity;
 
-public class Report {
-  private int id;
+public class Report extends Entity{
   private String topic;
-  private Speaker speaker;
+  private User speaker;
 
   public Report() { }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
 
   public String getTopic() {
     return topic;
@@ -23,11 +14,11 @@ public class Report {
     this.topic = topic;
   }
 
-  public Speaker getSpeaker() {
+  public User getSpeaker() {
     return speaker;
   }
 
-  public void setSpeaker(Speaker speaker) {
+  public void setSpeaker(User speaker) {
     this.speaker = speaker;
   }
 

@@ -1,4 +1,4 @@
-package com.conference.my.dao;
+package com.conference.my.dao.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,6 @@ public class ConnectionManager {
 
   private ConnectionManager(){
   }
-
 
   public static ConnectionManager getInstance(){
     if (connectionPool ==null)
@@ -71,6 +70,5 @@ public class ConnectionManager {
       throw new IllegalStateException("Cannot rollback " + con);
     }
   }
-
 
 }

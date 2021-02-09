@@ -1,11 +1,10 @@
 package com.conference.my.entity;
 
-public class User {
-  private int id;
+public class User extends Entity{
   private String name;
   private String email;
   private String password;
-  protected Role role = Role.VISITOR;
+  protected Role role;
 
   public User() { }
 
@@ -13,14 +12,6 @@ public class User {
     this.name = name;
     this.email = email;
     this.password = password;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public int getId() {
-    return id;
   }
 
   public void setName(String name) {
@@ -49,6 +40,10 @@ public class User {
 
   public Role getRole() {
     return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
   }
 
   @Override

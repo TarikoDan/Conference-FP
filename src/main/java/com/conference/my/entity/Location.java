@@ -1,7 +1,6 @@
 package com.conference.my.entity;
 
-public class Location {
-  private int id;
+public class Location extends Entity{
   private int zipCode;
   private String country;
   private String region;
@@ -13,12 +12,40 @@ public class Location {
   private Location() {
   }
 
+  public int getZipCode() {
+    return zipCode;
+  }
+
+  public String getCountry() {
+    return country;
+  }
+
+  public String getRegion() {
+    return region;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public String getStreet() {
+    return street;
+  }
+
+  public String getBuilding() {
+    return building;
+  }
+
+  public String getSuite() {
+    return suite;
+  }
+
   public static Builder newBuilder() {
     return new Location().new Builder();
   }
 
 
-  class Builder {
+  public class Builder {
     private Builder() {
     }
 
@@ -37,10 +64,63 @@ public class Location {
       return this;
     }
 
+    public Builder region(String region) {
+      Location.this.region = region;
+      return this;
+    }
+
+    public Builder city(String city) {
+      Location.this.city = city;
+      return this;
+    }
+
+    public Builder street(String street) {
+      Location.this.street = street;
+      return this;
+    }
+
+    public Builder building(String building) {
+      Location.this.building = building;
+      return this;
+    }
+
+    public Builder suite(String suite) {
+      Location.this.suite = suite;
+      return this;
+    }
+
     public Location build() {
       return Location.this;
     }
 
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Location location = (Location) o;
+
+    if (zipCode != location.zipCode) return false;
+    if (!country.equals(location.country)) return false;
+    if (region != null ? !region.equals(location.region) : location.region != null) return false;
+    if (!city.equals(location.city)) return false;
+    if (street != null ? !street.equals(location.street) : location.street != null) return false;
+    if (building != null ? !building.equals(location.building) : location.building != null) return false;
+    return suite != null ? suite.equals(location.suite) : location.suite == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = zipCode;
+    result = 31 * result + country.hashCode();
+    result = 31 * result + (region != null ? region.hashCode() : 0);
+    result = 31 * result + city.hashCode();
+    result = 31 * result + (street != null ? street.hashCode() : 0);
+    result = 31 * result + (building != null ? building.hashCode() : 0);
+    result = 31 * result + (suite != null ? suite.hashCode() : 0);
+    return result;
   }
 
   @Override

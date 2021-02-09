@@ -1,4 +1,4 @@
-package com.conference.my.dao;
+package com.conference.my.dao.util;
 
 import org.apache.commons.dbcp2.*;
 import org.apache.commons.pool2.ObjectPool;

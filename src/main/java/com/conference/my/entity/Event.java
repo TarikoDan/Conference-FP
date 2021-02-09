@@ -6,14 +6,13 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Event {
-  private int id;
+public class Event extends Entity{
   private String title;
   private LocalDate date;
   private Location location;
 //  private Report[] reports;
-  private Set<Report> reports;
-  private Set<User> visitors;
+//  private Set<Report> reports;
+//  private Set<User> visitors;
 
   private Event() { }
 
@@ -29,26 +28,39 @@ public class Event {
     this.location = location;
   }
 
-  public void setReports(int reportsNumber) {
-    this.reports = new HashSet<>(reportsNumber);
+  public String getTitle() {
+    return title;
   }
 
-  public void addReport(Report report) {
-    this.reports.add(report);
+  public LocalDate getDate() {
+    return date;
   }
 
-  public void addVisitor(User user) {
-    this.visitors.add(user);
+  public Location getLocation() {
+    return location;
   }
 
-  public static Event createEvent(String title, LocalDate date, Location location, int reportsNumber) {
+  public int getId() {
+    return id;
+  }
+//  public void setReports(int reportsNumber) {
+//    this.reports = new HashSet<>(reportsNumber);
+//  }
+
+//  public void addReport(Report report) {
+//    this.reports.add(report);
+//  }
+//
+//  public void addVisitor(User user) {
+//    this.visitors.add(user);
+//  }
+
+  public static Event createEvent(int id, String title, LocalDate date, Location location) {
     Event event = new Event();
+    event.setId(id);
     event.setTitle(title);
     event.setDate(date);
     event.setLocation(location);
-    event.setReports(reportsNumber);
-//    TODO implement id from DB
-    event.id = 7;
     return event;
   }
 
@@ -59,8 +71,8 @@ public class Event {
         ", title='" + title + '\'' +
         ", date=" + date +
         ", " + location +
-        ", reports=" + reports +
-        ", visitors=" + visitors +
+//        ", reports=" + reports +
+//        ", visitors=" + visitors +
         '}';
   }
 

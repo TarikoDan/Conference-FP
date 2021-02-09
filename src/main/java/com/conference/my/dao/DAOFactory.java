@@ -1,8 +1,10 @@
 package com.conference.my.dao;
 
 import com.conference.my.dao.implementation.EventDAOImp;
+import com.conference.my.dao.implementation.LocationDAOImp;
 import com.conference.my.dao.implementation.ReportDAOImp;
 import com.conference.my.dao.implementation.UserDAOImp;
+import com.conference.my.dao.util.DBCPManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +19,7 @@ public class DAOFactory {
   public DAOFactory() { }
 
   public static void createConnection() {
-    //TODO change
+    //TODO change when WEB will be implemented
 //    connection = ConnectionManager.getInstance().getConnection();
     connection = DBCPManager.getInstance().getConnection();
   }
@@ -29,5 +31,7 @@ public class DAOFactory {
   public static ReportDAO getReportDAO() { return new ReportDAOImp(connection); }
 
   public static EventDAO getEventDAO() { return new EventDAOImp(connection); }
+
+  public static LocationDAO getLocationDAO() { return new LocationDAOImp(connection); }
 
 }

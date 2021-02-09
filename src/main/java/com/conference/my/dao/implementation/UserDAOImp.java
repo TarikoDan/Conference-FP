@@ -1,8 +1,9 @@
 package com.conference.my.dao.implementation;
 
-import com.conference.my.dao.EntityTransformer;
+import com.conference.my.dao.util.EntityTransformer;
 import com.conference.my.dao.GenericDAO;
 import com.conference.my.dao.UserDAO;
+import com.conference.my.entity.Role;
 import com.conference.my.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,7 @@ public class UserDAOImp extends GenericDAO<User> implements UserDAO {
   @Override
   public boolean createNewUser(User user) {
     final String INSERT_USER =
-        "INSERT INTO user (name, email, password, role_id) VALUES (?, ?, ?, 3)";
+        "INSERT INTO user (name, email, password, role_id) VALUES (?, ?, ?, ?)";
     if (findUserByEmail(user.getEmail()) != null) return false;
     boolean res;
     try {
@@ -39,7 +40,7 @@ public class UserDAOImp extends GenericDAO<User> implements UserDAO {
   @Override
   public List<User> findAllUsers() {
     final String FIND_ALL_USERS =
-        "SELECT * FROM user WHERE role_id = 3";
+        "SELECT * FROM user";
     try {
       return findAll(FIND_ALL_USERS, connection);
     } catch (SQLException ex) {
@@ -51,7 +52,7 @@ public class UserDAOImp extends GenericDAO<User> implements UserDAO {
   @Override
   public User findUserById(int userId) {
     final String FIND_USER_BY_ID =
-        "SELECT * FROM user WHERE role_id = 3 AND id = ?";
+        "SELECT * FROM user WHERE id = ?";
     try {
       return findByField(userId, FIND_USER_BY_ID, connection);
     } catch (SQLException ex) {
@@ -75,13 +76,48 @@ public class UserDAOImp extends GenericDAO<User> implements UserDAO {
   }
 
   @Override
-  public boolean updateUserById(int userId) {
+  public boolean updateUserById(int userId, User newUser) {
     return false;
   }
 
   @Override
   public boolean deleteUserById(int userId) {
     return false;
+  }
+
+  @Override
+  public List<User> findWillingSpeakersForReport(int reportId) {
+    final String FIND_WILLING_SPEAKERS_FOR_REPORT =
+        "SELECT * FROM user WHERE role_id = 2 AND id IN (SELECT speaker_id FROM speaker_report WHERE report_id = ?)";
+    try {
+      return findAllWithCondition(reportId, FIND_WILLING_SPEAKERS_FOR_REPORT, connection);
+    } catch (SQLException ex) {
+      LOGGER.error("Searching Users Error", ex);
+      throw new NoSuchElementException("Data wasn't found");
+    }
+  }
+
+  @Override
+  public void registerVisitorForEvent(int userId, int eventId) {
+    final String REGISTER_USER_FOR_EVENT =
+        "INSERT INTO visitor_event (visitor_id, event_id) VALUES (?, ?)";
+    try {
+      tieRecordsInJoinTable(userId, eventId, REGISTER_USER_FOR_EVENT, connection);
+    } catch (SQLException ex) {
+      LOGGER.error("User with id: {} wasn't registered for Event(id= {})", userId, eventId, ex);
+    }
+  }
+
+
+  @Override
+  public void visitEventByUser(int userId, int eventId) {
+    final String VISIT_EVENT_BY_USER =
+        "UPDATE visitor_event SET is_visited = true WHERE visitor_id = ? AND event_id = ?";
+    try {
+      tieRecordsInJoinTable(userId, eventId, VISIT_EVENT_BY_USER, connection);
+    } catch (SQLException ex) {
+      LOGGER.error("Fail during trying to visit Event(id= {}) by User with id: {}", eventId, userId, ex);
+    }
   }
 
   EntityTransformer<User> userTransformer = new EntityTransformer<>() {
@@ -92,6 +128,7 @@ public class UserDAOImp extends GenericDAO<User> implements UserDAO {
       user.setName(rs.getString("name"));
       user.setEmail(rs.getString("email"));
       user.setPassword(rs.getString("password"));
+      user.setRole(defineRole(rs));
       return user;
     }
 
@@ -101,7 +138,8 @@ public class UserDAOImp extends GenericDAO<User> implements UserDAO {
       int k = 1;
       prst.setString(k++, user.getName());
       prst.setString(k++, user.getEmail());
-      prst.setString(k, user.getPassword());
+      prst.setString(k++, user.getPassword());
+      prst.setInt(k, user.getRole().getRoleID());
       res = prst.executeUpdate();
       try (ResultSet generatedKeys = prst.getGeneratedKeys()) {
         if (generatedKeys.next()) {
@@ -112,5 +150,20 @@ public class UserDAOImp extends GenericDAO<User> implements UserDAO {
       return res;
     }
   };
+
+  private Role defineRole(ResultSet rs) throws SQLException {
+    final int role_id = rs.getInt("role_id");
+    Role role;
+    switch (role_id) {
+      case 1: role = Role.MODERATOR;
+        break;
+      case 2: role = Role.SPEAKER;
+        break;
+      case 3: role = Role.VISITOR;
+        break;
+      default: role = null;
+    }
+    return role;
+  }
 
 }
